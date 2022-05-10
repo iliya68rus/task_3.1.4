@@ -40,5 +40,9 @@
 <form th:action="@{/admin/users/new}">
     <input type="submit" value="Add User">
 </form>
+<br>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout">
+</form>
 </body>
 </html>
