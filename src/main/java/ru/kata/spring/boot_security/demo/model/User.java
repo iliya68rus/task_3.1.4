@@ -17,7 +17,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userName")
+    @Column(name = "user_name")
     private String userName;
 
     @Column(name = "password")
@@ -95,14 +95,9 @@ public class User implements UserDetails {
         return null;
     }
 
-//    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-//        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-//    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRolesList().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-//        return mapRolesToAuthorities(getRolesList());
     }
 
     @Override
