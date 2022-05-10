@@ -24,12 +24,12 @@
         <td th:text="${user.lastName}"/>
         <td th:text="${user.age}"/>
         <td>
-            <form th:action="@{/users/{id}/edit(id=${user.id})}">
+            <form th:action="@{/admin/users/{id}/edit(id=${user.id})}">
                 <input type="submit" value="Edit">
             </form>
         </td>
         <td>
-            <form th:method="DELETE" th:action="@{/users/{id}(id=${user.id})}">
+            <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.id})}">
                 <input type="submit" value="Delete">
             </form>
         </td>
@@ -37,7 +37,7 @@
     </tbody>
 </table>
 <br>
-<form th:action="@{/users/new}">
+<form th:action="@{/admin/users/new}">
     <input type="submit" value="Add User">
 </form>
 </body>
