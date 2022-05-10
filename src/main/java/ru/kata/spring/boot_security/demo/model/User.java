@@ -1,20 +1,24 @@
 package ru.kata.spring.boot_security.demo.model;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "userName")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -91,23 +95,43 @@ public class User {
         return null;
     }
 
-    public void setRolesList(List<Role> rolesList) {
-        this.rolesList = rolesList;
+//    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+//        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+//    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRolesList().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+//        return mapRolesToAuthorities(getRolesList());
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return userName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

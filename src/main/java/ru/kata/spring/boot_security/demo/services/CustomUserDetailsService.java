@@ -1,14 +1,13 @@
-package ru.kata.spring.boot_security.demo.model;
+package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
+import ru.kata.spring.boot_security.demo.model.User;
 
-import javax.persistence.EntityManager;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -17,18 +16,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        ru.kata.spring.boot_security.demo.model.User myUser = userDAO.getUserByUsername(userName);
-        if (myUser == null) {
+        User user = userDAO.getUserByUsername(userName);
+        if (user == null) {
             throw new UsernameNotFoundException("Unknown user: " + userName);
         }
-        System.err.println(myUser.getLogin() + " " + myUser.getPassword()
-                + " " + myUser.getRoleName());
+        System.err.println(user.getUsername() + " " + user.getPassword()
+                + " " + user.getRoleName());
 
-        UserDetails user = User.builder()
-                .username(myUser.getLogin())
-                .password(myUser.getPassword())
-                .roles(myUser.getRoleName())
+        UserDetails userDetails =
+                org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+//                .roles(myUser.getRoleName())
+                .authorities(user.getAuthorities())
                 .build();
-        return user;
+        return userDetails;
     }
 }
