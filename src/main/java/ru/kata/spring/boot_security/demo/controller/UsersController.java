@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.services.CustomUserDetailsService;
+
+import java.security.Principal;
 
 
 @Controller
@@ -21,9 +24,11 @@ public class UsersController {
     }
 
     @GetMapping("/user")
-    public String showUsers(Model model) {
-        model.addAttribute("users", userdao.getAllUser());
-        return "users/index";
+    public String showUsers(Model model, Principal principal) {
+        User user = userdao.getUserByUsername(principal.getName());
+//        System.out.println("Имя: " + principal.getName());
+        model.addAttribute("user", user);
+        return "users/show";
     }
 
 }

@@ -53,7 +53,7 @@ public class AdminsController {
     @DeleteMapping("/users/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userdao.deleteUser(id);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
 }
