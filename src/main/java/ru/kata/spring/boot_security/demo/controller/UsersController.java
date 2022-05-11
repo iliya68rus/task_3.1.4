@@ -31,4 +31,12 @@ public class UsersController {
         return "users/show";
     }
 
+    @GetMapping("/hello")
+    public String hello(Model model, Principal principal) {
+        User user = userdao.getUserByUsername(principal.getName());
+//        System.out.println("Имя: " + principal.getName());
+        model.addAttribute("user", user);
+        return "users/hello";
+    }
+
 }

@@ -20,6 +20,9 @@ public class User implements UserDetails {
     @Column(name = "user_name")
     private String userName;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "password")
     private String password;
 
@@ -88,11 +91,20 @@ public class User implements UserDetails {
     }
 
     public String getRoleName() {
+        StringBuilder result = new StringBuilder();
         List<Role> list = getRolesList();
         for (Role role: list) {
-            return role.getName();
+            result.append(role.getName().replace("ROLE_", " ")).append(" ");
         }
-        return null;
+        return result.toString();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
