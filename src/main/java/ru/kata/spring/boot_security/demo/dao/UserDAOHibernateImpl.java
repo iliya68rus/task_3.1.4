@@ -22,7 +22,7 @@ public class UserDAOHibernateImpl implements UserDAO {
 
     @Override
     public User getUserById(long id) {
-        return entityManager.find(User.class,id);
+        return entityManager.find(User.class, id);
     }
 
     @Override

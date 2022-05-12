@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dao.UserDAO;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -13,10 +16,22 @@ public class AdminsController {
 
     @Autowired
     private UserDAO userdao;
+    @GetMapping("/hello")
+    public String helloUsers(Model model, Principal principal) {
+        User user = userdao.getUserByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("users", userdao.getAllUser());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("roles", new Role());
+        return "users/hello";
+    }
 
     @GetMapping("/users")
-    public String showUsers(Model model) {
+    public String showUsers(Model model, Principal principal) {
+        User user = userdao.getUserByUsername(principal.getName());
+        model.addAttribute("user", user);
         model.addAttribute("users", userdao.getAllUser());
+        model.addAttribute("newUser", new User());
         return "users/index";
     }
 
