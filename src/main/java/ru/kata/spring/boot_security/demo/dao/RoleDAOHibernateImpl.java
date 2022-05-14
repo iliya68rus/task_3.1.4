@@ -25,4 +25,9 @@ public class RoleDAOHibernateImpl implements RoleDAO {
         return entityManager.createQuery("select r from Role r where r.name =: userRole", Role.class)
                 .setParameter("userRole", userRole).getSingleResult();
     }
+
+    @Override
+    public Role getRole(long roleId) {
+        return entityManager.find(Role.class, roleId);
+    }
 }

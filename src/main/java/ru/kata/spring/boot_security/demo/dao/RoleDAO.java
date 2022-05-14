@@ -7,4 +7,6 @@ public interface RoleDAO {
     public List<Role> getAllRole();
 
     public Role getRole(String userRole);
+
+    public Role getRole(long roleId);
 }

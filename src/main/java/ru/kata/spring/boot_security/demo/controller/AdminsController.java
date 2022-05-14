@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,25 +25,6 @@ public class AdminsController {
     @Autowired
     private RoleService roleService;
 
-//    @GetMapping("/test")
-//    public String test(Model model) {
-//        model.addAttribute("roles", roleService.getAllRole());
-////        List<Role> roles = new ArrayList(List.of("ADMIN"));
-////        User user = new User(1L,"user", "user", "1234", "ILIYA", "KOROSTELEV", (byte)12, roles);
-////        userService.saveUser(user);
-//        return "users/test";
-//    }
-
-//    @GetMapping("/hello")
-//    public String helloUsers(Model model, Principal principal) {
-//        User user = userService.getUserByUsername(principal.getName());
-//        model.addAttribute("user", user);
-//        model.addAttribute("users", userService.getAllUser());
-//        model.addAttribute("newUser", new User());
-//        model.addAttribute("roles", new Role());
-//        return "users/hello";
-//    }
-
     @GetMapping("/users")
     public String showUsers(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
@@ -54,8 +36,11 @@ public class AdminsController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user") User user) {
-//        getUserRoles(user);
+    public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
+        Role role = roleService.getRole(roleId);
+        System.err.println(role);
+        List<Role> roleList = new ArrayList(List.of(role));
+        user.setRoles(roleList);
         userService.saveUser(user);
         return "redirect:/admin/users";
     }
@@ -89,11 +74,5 @@ public class AdminsController {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }
-
-//    private void getUserRoles(User user) {
-//        user.setRoles(user.getRoles().stream()
-//                .map(role -> roleService.getRole(role.getName()))
-//                .collect(Collectors.toList()));
-//    }
 
 }

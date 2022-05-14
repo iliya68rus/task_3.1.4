@@ -20,4 +20,8 @@ public class RoleService {
     public List<Role> getAllRole() {
         return roleDAO.getAllRole();
     }
+
+    public Role getRole(long roleId) {
+        return roleDAO.getRole(roleId);
+    }
 }
