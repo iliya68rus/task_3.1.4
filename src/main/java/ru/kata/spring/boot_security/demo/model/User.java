@@ -35,10 +35,21 @@ public class User implements UserDetails {
     @Column(name = "age")
     private Byte age;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    private List<Role> rolesList;
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private List<Role> roles;
 
     public User() {
+    }
+
+    public User(Long id, String userName, String email, String password, String name, String lastName, Byte age, List<Role> roles) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.roles = roles;
     }
 
     public User(Long id, String name, String lastName, Byte age) {
@@ -86,13 +97,13 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public List<Role> getRolesList() {
-        return rolesList;
+    public List<Role> getRoles() {
+        return roles;
     }
 
     public String getRoleName() {
         StringBuilder result = new StringBuilder();
-        List<Role> list = getRolesList();
+        List<Role> list = getRoles();
         for (Role role: list) {
             result.append(role.getName().replace("ROLE_", " ")).append(" ");
         }
@@ -107,9 +118,26 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(List<Role> rolesList) {
+        this.roles = rolesList;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRolesList().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+//        return getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+        return getRoles();
     }
 
     @Override

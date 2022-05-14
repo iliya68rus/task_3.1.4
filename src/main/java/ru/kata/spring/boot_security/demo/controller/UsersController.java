@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.services.CustomUserDetailsService;
+import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
 
@@ -16,7 +15,7 @@ import java.security.Principal;
 public class UsersController {
 
     @Autowired
-    private UserDAO userdao;
+    private UserService userService;
 
     @GetMapping("/")
     public String start() {
@@ -25,7 +24,7 @@ public class UsersController {
 
     @GetMapping("/user")
     public String showUsers(Model model, Principal principal) {
-        User user = userdao.getUserByUsername(principal.getName());
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
         return "users/show";
     }
