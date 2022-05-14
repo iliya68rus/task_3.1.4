@@ -40,11 +40,11 @@ public class UserDAOHibernateImpl implements UserDAO {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        System.out.println("TEST: " + username);
+    public User getUserByUsername(String email) {
+        System.out.println("TEST: " + email);
         TypedQuery<User> query = entityManager.createQuery(
-                "SELECT u FROM User u WHERE u.userName = :login", User.class);
-        User user = query.setParameter("login", username)
+                "SELECT u FROM User u WHERE u.email = :login", User.class);
+        User user = query.setParameter("login", email)
                 .getSingleResult();
         System.out.println("Answer: " + user.getName());
 

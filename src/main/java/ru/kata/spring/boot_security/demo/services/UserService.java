@@ -32,7 +32,7 @@ public class UserService {
         userDAO.deleteUser(id);
     }
 
-    public User getUserByUsername(String username) {
-        return userDAO.getUserByUsername(username);
+    public User getUserByUsername(String email) {
+        return userDAO.getUserByUsername(email);
     }
 }

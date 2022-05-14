@@ -1,12 +1,10 @@
 package ru.kata.spring.boot_security.demo.model;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -17,10 +15,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
-    private String userName;
-
-    @Column(name = "email")
+    @PrimaryKeyJoinColumn(name = "email")
+//    @Column(name = "email")
     private String email;
 
     @Column(name = "password")
@@ -41,36 +37,24 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String userName, String email, String password, String name, String lastName, Byte age, List<Role> roles) {
-        this.id = id;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.roles = roles;
-    }
-
-    public User(Long id, String name, String lastName, Byte age) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-    }
-
-    public User(String name, String lastName, Byte age) {
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -101,6 +85,10 @@ public class User implements UserDetails {
         return roles;
     }
 
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     public String getRoleName() {
         StringBuilder result = new StringBuilder();
         List<Role> list = getRoles();
@@ -110,33 +98,8 @@ public class User implements UserDetails {
         return result.toString();
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRoles(List<Role> rolesList) {
-        this.roles = rolesList;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
         return getRoles();
     }
 
@@ -147,7 +110,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override
