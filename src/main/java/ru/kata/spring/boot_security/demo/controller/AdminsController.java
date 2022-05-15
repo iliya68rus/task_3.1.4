@@ -35,6 +35,13 @@ public class AdminsController {
         return "users/index";
     }
 
+    @GetMapping("/")
+    public String showAdminLikeUser(Model model, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        model.addAttribute("user", user);
+        return "users/user-admin";
+    }
+
     @PostMapping("/users")
     public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
         Role role = roleService.getRole(roleId);

@@ -34,7 +34,7 @@ public class DataLoader implements ApplicationRunner {
         User ivan = new User("admin@mail.ru", "admin", "Ivan", "Pushkin", (byte)65, adminList);
         User petr = new User("user@mail.ru", "user", "Petr","Ylanov", (byte)24, userList);
 
-        userService.saveUser(ivan);
-        userService.saveUser(petr);
+//        userService.saveUser(ivan);
+//        userService.saveUser(petr);
     }
 }
