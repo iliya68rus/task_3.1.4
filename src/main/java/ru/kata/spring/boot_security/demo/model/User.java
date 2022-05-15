@@ -15,8 +15,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @PrimaryKeyJoinColumn(name = "email")
-//    @Column(name = "email")
+    @Column(name = "email")
     private String email;
 
     @Column(name = "password")
@@ -30,9 +29,18 @@ public class User implements UserDetails {
 
     @Column(name = "age")
     private Byte age;
-
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    REFRESH
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    public User(String email, String password, String name, String lastName, Byte age, List<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+        this.roles = roles;
+    }
 
     public User() {
     }
