@@ -71,8 +71,12 @@ public class AdminsController {
     }
 
     @PatchMapping("/users/{id}")
-    public String editUser(@ModelAttribute("user") User user, @PathVariable("id") long id) {
-        userService.editUser(id, user);
+    public String editUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
+        Role role = roleService.getRole(roleId);
+        System.err.println(role);
+        List<Role> roleList = new ArrayList(List.of(role));
+        user.setRoles(roleList);
+        userService.editUser(user);
         return "redirect:/admin/users";
     }
 

@@ -30,7 +30,7 @@ public class UserDAOHibernateImpl implements UserDAO {
         entityManager.persist(user);
     }
 
-    public void editUser(long id, User user) {
+    public void editUser(User user) {
         entityManager.merge(user);
     }
 
