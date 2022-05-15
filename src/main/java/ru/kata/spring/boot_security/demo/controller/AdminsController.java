@@ -46,8 +46,7 @@ public class AdminsController {
     public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
         Role role = roleService.getRole(roleId);
         System.err.println(role);
-        List<Role> roleList = new ArrayList(List.of(role));
-        user.setRoles(roleList);
+        user.setRole(role);
         userService.saveUser(user);
         return "redirect:/admin/users";
     }
@@ -74,8 +73,7 @@ public class AdminsController {
     public String editUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
         Role role = roleService.getRole(roleId);
         System.err.println(role);
-        List<Role> roleList = new ArrayList(List.of(role));
-        user.setRoles(roleList);
+        user.setRole(role);
         userService.editUser(user);
         return "redirect:/admin/users";
     }

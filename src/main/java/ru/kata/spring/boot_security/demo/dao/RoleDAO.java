@@ -9,4 +9,6 @@ public interface RoleDAO {
     public Role getRole(String userRole);
 
     public Role getRole(long roleId);
+
+    public void addRole(Role role);
 }

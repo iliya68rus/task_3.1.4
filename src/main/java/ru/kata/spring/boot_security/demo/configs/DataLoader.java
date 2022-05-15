@@ -6,37 +6,40 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DataLoader implements ApplicationRunner {
 
+    @Autowired
     private UserService userService;
 
     @Autowired
-    public DataLoader(UserService userService) {
-        this.userService = userService;
-    }
+    private RoleService roleService;
 
     public void run(ApplicationArguments args) {
-        Role admin = new Role("ROLE_ADMIN");
-        Role user = new Role("ROLE_USER");
-        Role user2 = new Role("ROLE_USER");
 
-        List<Role> adminList = new ArrayList<>();
-        adminList.add(admin);
-        adminList.add(user);
 
-        List<Role> userList = new ArrayList<>();
-        userList.add(user2);
+        if (roleService.getRole("ROLE_ADMIN") == null) {
+            roleService.addRole(new Role("ROLE_ADMIN"));
+        }
 
-        User ivan = new User("admin@mail.ru", "admin", "Ivan", "Pushkin", (byte)65, adminList);
-        User petr = new User("user@mail.ru", "user", "Petr","Ylanov", (byte)24, userList);
+        if (roleService.getRole("ROLE_USER") == null) {
+            roleService.addRole(new Role("ROLE_USER"));
+        }
 
-//        userService.saveUser(ivan);
-//        userService.saveUser(petr);
+        if (userService.getUserByUsername("admin@mail.ru") == null) {
+            User ivan = new User("admin@mail.ru", "admin", "Ivan", "Pushkin", (byte)65);
+            ivan.setRole(roleService.getRole("ROLE_ADMIN"));
+            ivan.setRole(roleService.getRole("ROLE_USER"));
+            userService.saveUser(ivan);
+        }
+
+        if (userService.getUserByUsername("user@mail.ru") == null) {
+            User petr = new User("user@mail.ru", "user", "Petr","Ylanov", (byte)24);
+            petr.setRole(roleService.getRole("ROLE_USER"));
+            userService.saveUser(petr);
+        }
     }
 }

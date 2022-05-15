@@ -3,6 +3,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,20 +30,21 @@ public class User implements UserDetails {
 
     @Column(name = "age")
     private Byte age;
-//    REFRESH
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public User(String email, String password, String name, String lastName, Byte age, List<Role> roles) {
+    public User(String email, String password, String name, String lastName, Byte age) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.lastName = lastName;
         this.age = age;
-        this.roles = roles;
+        this.roles = new ArrayList<>();
     }
 
     public User() {
+        this.roles = new ArrayList<>();
     }
 
     public Long getId() {
@@ -93,8 +95,8 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        roles.add(role);
     }
 
     public String getRoleName() {

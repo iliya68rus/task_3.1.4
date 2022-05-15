@@ -24,4 +24,8 @@ public class RoleService {
     public Role getRole(long roleId) {
         return roleDAO.getRole(roleId);
     }
+
+    public void addRole(Role role) {
+        roleDAO.addRole(role);
+    }
 }
