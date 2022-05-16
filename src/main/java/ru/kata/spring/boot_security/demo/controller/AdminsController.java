@@ -1,10 +1,12 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -29,12 +31,26 @@ public class AdminsController {
         this.encoder = encoder;
     }
 
+//    @GetMapping("/users/new")
+//    public String newUser(Principal principal, Model model) {
+//        User admin = userService.getUserByUsername(principal.getName());
+//
+////        model.addAttribute("admin", admin);
+//        model.addAttribute("adminEmail", admin.getEmail());
+//        model.addAttribute("adminRoles", admin.getRoleName());
+//        model.addAttribute("users", userService.getAllUser());
+//        model.addAttribute("user", new User());
+//        model.addAttribute("roles", roleService.getAllRole());
+//        return "users/hello";
+//    }
+
     @GetMapping("/users")
     public String showUsers(Model model, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        model.addAttribute("user", user);
+        User admin = userService.getUserByUsername(principal.getName());
+        model.addAttribute("adminEmail", admin.getEmail());
+        model.addAttribute("adminRoles", admin.getRoleName());
         model.addAttribute("users", userService.getAllUser());
-        model.addAttribute("newUser", new User());
+        model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getAllRole());
         return "users/index";
     }
@@ -47,11 +63,25 @@ public class AdminsController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user")  User user, @RequestParam(value = "role_id") long roleId) {
-//        if (bindingResult.hasErrors()) {
-//            return "users/index";
-//        }
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
+                             Principal principal, Model model, @RequestParam(value = "role_id") long roleId) {
+
+        User admin = userService.getUserByUsername(principal.getName());
+
+        model.addAttribute("adminEmail", admin.getEmail());
+        model.addAttribute("adminRoles", admin.getRoleName());
+        model.addAttribute("users", userService.getAllUser());
+        model.addAttribute("roles", roleService.getAllRole());
+
+        if (userService.getUserByUsername(user.getEmail()) != null) {
+            bindingResult.addError(new FieldError("email", "email",
+                    String.format("User with email \"%s\" is already exist!", user.getEmail())));
+            System.err.println("ОШИБКА ТАКОЙ ПОЛЬЗОВАТЕЛЬ УЖЕ ЕСТЬ");
+            return "users/edit";
+        }
+        
         Role role = roleService.getRole(roleId);
+//        Role role = roleService.getRole("ROLE_ADMIN");
         System.err.println(role);
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRole(role);
@@ -63,12 +93,6 @@ public class AdminsController {
     public String showUsersById(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "users/show";
-    }
-
-    @GetMapping("/users/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "users/new";
     }
 
     @GetMapping("/users/{id}/edit")
