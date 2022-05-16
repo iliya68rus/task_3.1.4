@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -45,7 +47,10 @@ public class AdminsController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
+    public String createUser(@ModelAttribute("user")  User user, @RequestParam(value = "role_id") long roleId) {
+//        if (bindingResult.hasErrors()) {
+//            return "users/index";
+//        }
         Role role = roleService.getRole(roleId);
         System.err.println(role);
         user.setPassword(encoder.encode(user.getPassword()));
