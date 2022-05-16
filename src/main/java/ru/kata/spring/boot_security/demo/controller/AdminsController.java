@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,12 @@ public class AdminsController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping("/users")
     public String showUsers(Model model, Principal principal) {
@@ -46,6 +51,7 @@ public class AdminsController {
     public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "role_id") long roleId) {
         Role role = roleService.getRole(roleId);
         System.err.println(role);
+        user.setPassword(encoder.encode(user.getPassword()));
         user.setRole(role);
         userService.saveUser(user);
         return "redirect:/admin/users";

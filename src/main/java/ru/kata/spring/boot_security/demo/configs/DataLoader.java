@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -18,6 +19,9 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     public void run(ApplicationArguments args) {
 
 
@@ -30,14 +34,16 @@ public class DataLoader implements ApplicationRunner {
         }
 
         if (userService.getUserByUsername("admin@mail.ru") == null) {
-            User ivan = new User("admin@mail.ru", "admin", "Ivan", "Pushkin", (byte)65);
+            User ivan = new User("admin@mail.ru", encoder.encode("admin")
+                    , "Ivan", "Pushkin", (byte)65);
             ivan.setRole(roleService.getRole("ROLE_ADMIN"));
             ivan.setRole(roleService.getRole("ROLE_USER"));
             userService.saveUser(ivan);
         }
 
         if (userService.getUserByUsername("user@mail.ru") == null) {
-            User petr = new User("user@mail.ru", "user", "Petr","Ylanov", (byte)24);
+            User petr = new User("user@mail.ru", encoder.encode("user")
+                    , "Petr","Ylanov", (byte)24);
             petr.setRole(roleService.getRole("ROLE_USER"));
             userService.saveUser(petr);
         }
