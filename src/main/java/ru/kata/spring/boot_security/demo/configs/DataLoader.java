@@ -13,14 +13,16 @@ import ru.kata.spring.boot_security.demo.services.UserService;
 @Component
 public class DataLoader implements ApplicationRunner {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    public DataLoader(UserService userService, RoleService roleService, PasswordEncoder encoder) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.encoder = encoder;
+    }
 
     public void run(ApplicationArguments args) {
 

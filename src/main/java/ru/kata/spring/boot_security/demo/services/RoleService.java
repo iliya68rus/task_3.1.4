@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class RoleService {
 
+    private final RoleDAO roleDAO;
+
     @Autowired
-    private RoleDAO roleDAO;
+    public RoleService(RoleDAO roleDAO) {
+        this.roleDAO = roleDAO;
+    }
 
     public Role getRole(String userRole) {
         return roleDAO.getRole(userRole);

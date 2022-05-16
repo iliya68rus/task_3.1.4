@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,23 +11,21 @@ import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminsController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    public AdminsController(UserService userService, RoleService roleService, PasswordEncoder encoder) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.encoder = encoder;
+    }
 
     @GetMapping("/users")
     public String showUsers(Model model, Principal principal) {
