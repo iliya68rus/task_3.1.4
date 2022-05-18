@@ -1,9 +1,9 @@
 package ru.kata.spring.boot_security.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -100,6 +100,7 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
+    @JsonIgnore
     public String getRoleName() {
         StringBuilder result = new StringBuilder();
         List<Role> list = getRoles();
@@ -109,6 +110,7 @@ public class User implements UserDetails {
         return result.toString();
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
@@ -119,26 +121,31 @@ public class User implements UserDetails {
         return password;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
