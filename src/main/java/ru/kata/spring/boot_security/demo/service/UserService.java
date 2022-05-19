@@ -1,19 +1,44 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
+
 import java.util.List;
 
-public interface UserService {
+@Service
+public class UserService {
 
-    List<User> getAllUsers();
+    private final UserDAO userDAO;
 
-    User getUserById(int id);
+    @Autowired
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
-    void save(User user);
+    public List<User> getAllUser() {
+        return userDAO.getAllUser();
+    }
 
-    void update(int id, User updateUser);
+    public User getUserById(long id) {
+        return userDAO.getUserById(id);
+    }
 
-    void delete(int id);
+    public void saveUser(User user) {
+        userDAO.saveUser(user);
+    }
 
-    User getUserByLogin(String username);
+    public void editUser(User user) {
+        userDAO.editUser(user);
+    }
+
+    public void deleteUser(long id) {
+        userDAO.deleteUser(id);
+    }
+
+    public User getUserByUsername(String email) {
+        return userDAO.getUserByUsername(email);
+    }
+
 }

@@ -1,10 +1,11 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
 
 import java.util.List;
 @RequestMapping("/api")
@@ -13,16 +14,18 @@ import java.util.List;
 public class AdminsRestController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminsRestController(UserService userService) {
+    public AdminsRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.getAllUser();
     }
 
     @GetMapping("/users/{id}")
@@ -32,18 +35,18 @@ public class AdminsRestController {
 
     @PutMapping("/users")
     public User update(@RequestBody User user) {
-        userService.update(user.getId(), user);
+        userService.editUser(user);
         return user;
     }
 
     @PostMapping("/users")
     public User newUser(@RequestBody User user) {
-        userService.save(user);
+        userService.saveUser(user);
         return user;
     }
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id) {
-        userService.delete(id);
+        userService.deleteUser(id);
     }
 }
