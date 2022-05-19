@@ -8,7 +8,7 @@ function getAllUsers() {
         .then(response => response.json())
         .then(users => {
             users.forEach(user => {
-                let roleOfUser = ''
+                // let roleOfUser = ''
                 // for (let r of user.roles) {
                 //     roleOfUser += r.role.replace("ROLE_", "") + " "
                 // }
@@ -19,19 +19,19 @@ function getAllUsers() {
                 temp += '<td>' + user.age + '</td>'
                 temp += '<td>' + user.email + '</td>'
                 temp += '<td>' + user.roleName + '</td>'
-                // temp += '<td>' +
-                //     '<button type="button" class="btn btn-info" data-toggle="modal" ' +
-                //     'onclick="edit(' + user.id + ')">' +
-                //     'Edit' +
-                //     '</button>' +
-                //     '</td>';
-                // temp += '<td>' +
-                //     '<button type="button" class="btn btn-danger" data-toggle="modal" ' +
-                //     'onclick="deleteUser(' + user.id + ')">' +
-                //     'Delete' +
-                //     '</button>' +
-                //     '</td>'
-                // temp += '</tr>'
+                temp += '<td>' +
+                    '<button type="button" class="btn btn-info" data-toggle="modal" ' +
+                    'onclick="edit(' + user.id + ')">' +
+                    'Edit' +
+                    '</button>' +
+                    '</td>';
+                temp += '<td>' +
+                    '<button type="button" class="btn btn-danger" data-toggle="modal" ' +
+                    'onclick="deleteUser(' + user.id + ')">' +
+                    'Delete' +
+                    '</button>' +
+                    '</td>'
+                temp += '</tr>'
             })
 
             document.querySelector('#allUsers tbody').innerHTML = temp
@@ -79,9 +79,9 @@ function edit(id) {
                 '</b>' +
                 '</label>' +
                 '<input type="text" ' +
-                'value="' + user.firstName + '" ' +
-                'class="form-control" id="edit2" name="firstName" ' +
-                'placeholder="First name">' +
+                'value="' + user.name + '" ' +
+                'class="form-control" id="edit2" name="Name" ' +
+                'placeholder="Name">' +
                 '</div>' +
                 '<div class="form-group">' +
                 '<label for="edit3">' +
@@ -240,9 +240,9 @@ function deleteUser(id) {
                 '</b>' +
                 '</label>' +
                 '<input type="text" ' +
-                'value="' + user.firstName + '" ' +
-                'class="form-control" id="edit2" name="firstName" ' +
-                'placeholder="First name" readonly>' +
+                'value="' + user.name + '" ' +
+                'class="form-control" id="edit2" name="Name" ' +
+                'placeholder="Name" readonly>' +
                 '</div>' +
                 '<div class="form-group">' +
                 '<label for="edit3">' +

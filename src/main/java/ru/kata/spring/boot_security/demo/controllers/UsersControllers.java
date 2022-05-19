@@ -25,6 +25,11 @@ public class UsersControllers {
         this.roleService = roleService;
     }
 
+    @GetMapping("/")
+    public String start() {
+        return "redirect:/admin";
+    }
+
 
     @GetMapping("/user")
     public String getUser(Principal principal, Model model) {
