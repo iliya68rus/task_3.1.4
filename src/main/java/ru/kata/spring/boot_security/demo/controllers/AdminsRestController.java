@@ -6,7 +6,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-
+import javax.validation.Valid;
 import java.util.List;
 @RequestMapping("/api")
 @RestController
@@ -41,8 +41,11 @@ public class AdminsRestController {
     }
 
     @PostMapping("/users")
-    public User newUser(@RequestBody User user) {
-        userService.saveUser(user);
+    public User newUser(@Valid @RequestBody User user) {
+        System.err.println("ДОБАВЛЕНИЕ!!! " + userService.getUserByUsername(user.getEmail()));
+        if (userService.getUserByUsername(user.getEmail()) == null) {
+            userService.saveUser(user);
+        }
         return user;
     }
 
