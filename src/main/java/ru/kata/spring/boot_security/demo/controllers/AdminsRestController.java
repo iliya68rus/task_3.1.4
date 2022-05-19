@@ -35,6 +35,7 @@ public class AdminsRestController {
 
     @PutMapping("/users")
     public User update(@RequestBody User user) {
+        System.err.println("ОТРЕДАКТИРОВАННЫЙ ПОЛЬЗОВАТЕЛЬ" + user.getName());
         userService.editUser(user);
         return user;
     }

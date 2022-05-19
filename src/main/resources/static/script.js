@@ -20,7 +20,6 @@ function getAllUsers() {
                 <td><button type="button" class="btn btn-danger" data-toggle="modal" onclick="deleteUser('${user.id}')">Delete</button></td>      
                 `
             })
-
             document.querySelector('#allUsers tbody').innerHTML = temp
             temp = ''
         })
@@ -62,7 +61,7 @@ function edit(id) {
                 '<div class="form-group">' +
                 '<label for="edit2">' +
                 '<b>' +
-                'First name' +
+                'Name' +
                 '</b>' +
                 '</label>' +
                 '<input type="text" ' +
@@ -145,7 +144,7 @@ function edit(id) {
 
 function editSubmit() {
     let id = document.getElementById('edit1').value
-    let firstName = document.getElementById('edit2').value
+    let name = document.getElementById('edit2').value
     let lastName = document.getElementById('edit3').value
     let age = document.getElementById('edit4').value
     let email = document.getElementById('edit5').value
@@ -174,7 +173,7 @@ function editSubmit() {
         },
         body: JSON.stringify({
             id,
-            firstName,
+            name,
             lastName,
             age,
             email,
@@ -309,7 +308,7 @@ function deleteSubmit(id) {
 }
 
 function addNewUser() {
-    let firstName = document.getElementById('add1').value
+    let name = document.getElementById('add1').value
     let lastName = document.getElementById('add2').value
     let age = document.getElementById('add3').value
     let email = document.getElementById('add4').value
@@ -337,7 +336,7 @@ function addNewUser() {
             'Content-Type': 'application/json;charset=UTF-8'
         },
         body: JSON.stringify({
-            firstName,
+            name,
             lastName,
             age,
             email,

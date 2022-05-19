@@ -26,13 +26,12 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
 
+        if (roleService.getRole("ROLE_USER") == null) {
+            roleService.addRole(new Role("ROLE_USER"));
+        }
 
         if (roleService.getRole("ROLE_ADMIN") == null) {
             roleService.addRole(new Role("ROLE_ADMIN"));
-        }
-
-        if (roleService.getRole("ROLE_USER") == null) {
-            roleService.addRole(new Role("ROLE_USER"));
         }
 
         if (userService.getUserByUsername("admin@mail.ru") == null) {
