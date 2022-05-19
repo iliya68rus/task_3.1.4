@@ -1,67 +1,55 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "roles")
-public class Role implements GrantedAuthority{
-
+public class Role implements GrantedAuthority {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
-    @Column(name = "name")
-    private String name;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    private String role;
 
-    public Role(String name) {
-        this.name = name;
-    }
+//    @ManyToMany(mappedBy = "role")
+//    private Set<User> user;
 
     public Role() {
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-
-
-    public void setUsers(List<User> usersList) {
-        this.users = usersList;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getAuthority() {
-        return name;
+    public Role(String role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
-        return name.replace("ROLE_", "");
+        return role.replaceFirst("ROLE_", "") + " ";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+
+    @Override
+    public String getAuthority() {
+        return role;
     }
 }

@@ -1,79 +1,68 @@
 package ru.kata.spring.boot_security.demo.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements UserDetails {
-
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-//    @Column(name = "email", unique = true)
-    @Column(name = "email")
+    private int id;
+    @Column
+    private String lastName;
+    @Column
+    private String firstName;
+
+    @Column
+    private int age;
+
+    @Column(unique = true)
     private String email;
 
-    @Column(name = "password")
+    @Column
     private String password;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "age")
-    private Byte age;
-
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private List<Role> roles;
-
-    public User(String email, String password, String name, String lastName, Byte age) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-        this.roles = new ArrayList<>();
-    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> role;
 
     public User() {
-        this.roles = new ArrayList<>();
     }
 
-    public Long getId() {
+    public User(int id, String firstName, String lastName, int age, String email, String password, Set<Role> role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -84,36 +73,20 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public Byte getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Byte age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRole(Role role) {
-        roles.add(role);
-    }
-
-    @JsonIgnore
-    public String getRoleName() {
-        StringBuilder result = new StringBuilder();
-        List<Role> list = getRoles();
-        for (Role role: list) {
-            result.append(role.getName().replace("ROLE_", " ")).append(" ");
-        }
-        return result.toString();
-    }
-
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -121,33 +94,59 @@ public class User implements UserDetails {
         return password;
     }
 
-    @JsonIgnore
     @Override
     public String getUsername() {
         return email;
     }
 
-    @JsonIgnore
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return role;
+    }
+
+    public void setRoles(Set<Role> role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }
+

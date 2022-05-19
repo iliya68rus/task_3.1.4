@@ -7,33 +7,27 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.services.CustomUserDetailsService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private SuccessUserHandler successUserHandler;
 
-    private final SuccessUserHandler successUserHandler;
-    private final CustomUserDetailsService userDetailsService;
+    private UserServiceImpl userDetailsService;
 
-    @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, CustomUserDetailsService userDetailsService) {
+
+@Autowired
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceImpl userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -41,13 +35,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/**").permitAll()
+                .antMatchers("/login").anonymous()
+                .antMatchers("/admin").access("hasAnyRole('ADMIN')")
+                .antMatchers("/admin/**").access("hasAnyRole('ADMIN')")
+                .antMatchers("/user").access("hasAnyRole('USER', 'ADMIN')")
+                .antMatchers("/user/**").access("hasAnyRole('USER', 'ADMIN')")
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/perform-login")
-                .successHandler(successUserHandler);
+                .successHandler(successUserHandler)
+                //.loginPage("/login")
+//                .loginProcessingUrl("/login")
+//                .usernameParameter("username")
+//                .passwordParameter("password")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login");
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
 }

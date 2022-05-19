@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Admin panel</title>
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">
+    <strong><a th:text="${user.getEmail()}"></a></strong>
+    <span class="text-start">with roles:
+            <a th:each="role : ${user.getRoles()}" th:text="${role} + ' '"></a>
+        </span>
+        </span>
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link active" th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
+</nav>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-10">
+            <h1>Admin panel</h1>
+            <br>
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                       aria-controls="home" aria-selected="true">Users table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile" aria-selected="false">New User</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>All users</h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped" id="allUsers">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody id="modal1">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Add new user</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <form name="newUser">
+                                            <div class="form-group">
+                                                <label for="add1"><b> First name </b> </label>
+                                                <input type="text" class="form-control" id="add1"
+                                                       placeholder="First name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add2"><b>Last name</b></label>
+                                                <input type="text" class="form-control" id="add2"
+                                                       placeholder="Last name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add3"><b>Age</b></label>
+                                                <input type="number" class="form-control" id="add3" placeholder="Age">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add4"><b>Email</b></label>
+                                                <input type="text" class="form-control" id="add4" placeholder="Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="add5"><b>Password</b></label>
+                                                <input type="password" class="form-control" id="add5"
+                                                       placeholder="Password">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="select1"><b>Role</b></label>
+                                                <select multiple class="form-control" size="2" name="roles"
+                                                        id="select1">
+                                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                                    <option value="ROLE_USER">USER</option>
+                                                </select>
+                                            </div>
+                                        </form>
+
+                                        <button type="submit" class="btn btn-success btn-lg" onclick="addNewUser()">Add
+                                            new user
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/script.js}" src="../static/script.js"></script></body>
