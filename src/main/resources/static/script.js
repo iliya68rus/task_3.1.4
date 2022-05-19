@@ -8,30 +8,17 @@ function getAllUsers() {
         .then(response => response.json())
         .then(users => {
             users.forEach(user => {
-                // let roleOfUser = ''
-                // for (let r of user.roles) {
-                //     roleOfUser += r.role.replace("ROLE_", "") + " "
-                // }
-                temp += '<tr>'
-                temp += '<td>' + user.id + '</td>'
-                temp += '<td>' + user.name + '</td>'
-                temp += '<td>' + user.lastName + '</td>'
-                temp += '<td>' + user.age + '</td>'
-                temp += '<td>' + user.email + '</td>'
-                temp += '<td>' + user.roleName + '</td>'
-                temp += '<td>' +
-                    '<button type="button" class="btn btn-info" data-toggle="modal" ' +
-                    'onclick="edit(' + user.id + ')">' +
-                    'Edit' +
-                    '</button>' +
-                    '</td>';
-                temp += '<td>' +
-                    '<button type="button" class="btn btn-danger" data-toggle="modal" ' +
-                    'onclick="deleteUser(' + user.id + ')">' +
-                    'Delete' +
-                    '</button>' +
-                    '</td>'
-                temp += '</tr>'
+                temp += `
+                <tr>
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.lastName}</td>
+                <td>${user.age}</td>
+                <td>${user.email}</td>
+                <td>${user.roleName}</td> 
+                <td><button type="button" class="btn btn-info" data-toggle="modal" onclick="edit('${user.id}')">Edit</button></td>      
+                <td><button type="button" class="btn btn-danger" data-toggle="modal" onclick="deleteUser('${user.id}')">Delete</button></td>      
+                `
             })
 
             document.querySelector('#allUsers tbody').innerHTML = temp
