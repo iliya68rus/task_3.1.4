@@ -26,25 +26,21 @@ public class UserDAOHibernateImpl implements UserDAO {
     }
 
     @Override
-    @Transactional
     public void saveUser(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    @Transactional
     public void editUser(User user) {
         entityManager.merge(user);
     }
 
     @Override
-    @Transactional
     public void deleteUser(long id) {
         entityManager.remove(getUserById(id));
     }
 
     @Override
-    @Transactional
     public User getUserByUsername(String email) {
         try {
             TypedQuery<User> query = entityManager.createQuery(

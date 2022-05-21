@@ -20,7 +20,6 @@ public class RoleDAOHibernateImpl implements RoleDAO {
     }
 
     @Override
-    @Transactional
     public Role getRole(String userRole) {
         try {
             return entityManager.createQuery("select r from Role r where r.name =: userRole", Role.class)
@@ -36,7 +35,6 @@ public class RoleDAOHibernateImpl implements RoleDAO {
     }
 
     @Override
-    @Transactional
     public void addRole(Role role) {
         entityManager.persist(role);
     }
