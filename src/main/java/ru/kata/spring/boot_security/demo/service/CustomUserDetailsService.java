@@ -24,8 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Unknown user: " + userName);
         }
-        System.err.println(user.getUsername() + " " + user.getPassword()
-                + " " + user.getRoleName());
 
         UserDetails userDetails =
                 org.springframework.security.core.userdetails.User.builder()

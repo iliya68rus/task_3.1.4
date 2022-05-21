@@ -47,12 +47,10 @@ public class UserDAOHibernateImpl implements UserDAO {
     @Transactional
     public User getUserByUsername(String email) {
         try {
-            System.out.println("TEST: " + email);
             TypedQuery<User> query = entityManager.createQuery(
                     "SELECT u FROM User u WHERE u.email = :login", User.class);
             User user = query.setParameter("login", email)
                     .getSingleResult();
-            System.out.println("Answer: " + user.getName());
             return user;
         } catch (Exception e) {
             return User.NOBODY;

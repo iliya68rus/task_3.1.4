@@ -6,7 +6,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import javax.validation.Valid;
 import java.util.List;
 @RequestMapping("/api")
 @RestController
@@ -35,14 +34,12 @@ public class AdminsRestController {
 
     @PutMapping("/users")
     public User update(@RequestBody User user) {
-        System.err.println("ОТРЕДАКТИРОВАННЫЙ ПОЛЬЗОВАТЕЛЬ" + user.getName());
         userService.editUser(user);
         return user;
     }
 
     @PostMapping("/users")
     public User newUser(@RequestBody User user) {
-        System.err.println("ДОБАВЛЕНИЕ!!! " + userService.getUserByUsername(user.getEmail()));
         if (userService.getUserByUsername(user.getEmail()) == User.NOBODY) {
             userService.saveUser(user);
         }
