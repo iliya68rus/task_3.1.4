@@ -26,7 +26,7 @@ public class RoleDAOHibernateImpl implements RoleDAO {
             return entityManager.createQuery("select r from Role r where r.name =: userRole", Role.class)
                     .setParameter("userRole", userRole).getSingleResult();
         } catch (Exception e) {
-            return null;
+            return Role.NOBODY;
         }
     }
 
@@ -36,6 +36,7 @@ public class RoleDAOHibernateImpl implements RoleDAO {
     }
 
     @Override
+    @Transactional
     public void addRole(Role role) {
         entityManager.persist(role);
     }

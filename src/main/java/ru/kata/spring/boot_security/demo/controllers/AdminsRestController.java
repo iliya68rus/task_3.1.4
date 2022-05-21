@@ -41,9 +41,9 @@ public class AdminsRestController {
     }
 
     @PostMapping("/users")
-    public User newUser(@Valid @RequestBody User user) {
+    public User newUser(@RequestBody User user) {
         System.err.println("ДОБАВЛЕНИЕ!!! " + userService.getUserByUsername(user.getEmail()));
-        if (userService.getUserByUsername(user.getEmail()) == null) {
+        if (userService.getUserByUsername(user.getEmail()) == User.NOBODY) {
             userService.saveUser(user);
         }
         return user;

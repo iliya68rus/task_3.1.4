@@ -26,15 +26,15 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
 
-        if (roleService.getRole("ROLE_USER") == null) {
+        if (roleService.getRole("ROLE_USER") == Role.NOBODY) {
             roleService.addRole(new Role("ROLE_USER"));
         }
 
-        if (roleService.getRole("ROLE_ADMIN") == null) {
+        if (roleService.getRole("ROLE_ADMIN") == Role.NOBODY) {
             roleService.addRole(new Role("ROLE_ADMIN"));
         }
 
-        if (userService.getUserByUsername("admin@mail.ru") == null) {
+        if (userService.getUserByUsername("admin@mail.ru") == User.NOBODY) {
             User ivan = new User("admin@mail.ru", encoder.encode("admin")
                     , "Ivan", "Pushkin", (byte)65);
             ivan.setRole(roleService.getRole("ROLE_ADMIN"));
@@ -42,7 +42,7 @@ public class DataLoader implements ApplicationRunner {
             userService.saveUser(ivan);
         }
 
-        if (userService.getUserByUsername("user@mail.ru") == null) {
+        if (userService.getUserByUsername("user@mail.ru") == User.NOBODY) {
             User petr = new User("user@mail.ru", encoder.encode("user")
                     , "Petr","Ylanov", (byte)24);
             petr.setRole(roleService.getRole("ROLE_USER"));

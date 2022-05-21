@@ -13,6 +13,9 @@ import java.util.List;
 @Table(name = "users")
 public class User implements UserDetails {
 
+    @Transient
+    public static final User NOBODY = new User();
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

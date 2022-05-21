@@ -10,6 +10,9 @@ import java.util.List;
 @Table(name = "roles")
 public class Role implements GrantedAuthority{
 
+    @Transient
+    public static final Role NOBODY = new Role();
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)

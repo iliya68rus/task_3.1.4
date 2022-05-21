@@ -55,7 +55,7 @@ public class UserDAOHibernateImpl implements UserDAO {
             System.out.println("Answer: " + user.getName());
             return user;
         } catch (Exception e) {
-            return null;
+            return User.NOBODY;
         }
     }
 }
