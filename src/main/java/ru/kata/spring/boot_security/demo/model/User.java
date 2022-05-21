@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +35,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "age")
+    @Min(value = 0)
     private Byte age;
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
