@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Component
-@Transactional
 public class RoleDAOHibernateImpl implements RoleDAO {
 
     @PersistenceContext
@@ -21,6 +20,7 @@ public class RoleDAOHibernateImpl implements RoleDAO {
     }
 
     @Override
+    @Transactional
     public Role getRole(String userRole) {
         try {
             return entityManager.createQuery("select r from Role r where r.name =: userRole", Role.class)
